@@ -48,6 +48,9 @@ const rplyBtn = document.getElementById('replay')
 
 	// 3.1) Call an initialize function
 
+
+  init()
+
 	// 3.2) That initialize function should initialize the state variables:
 	  // 3.2.1) Initialize the board array to 9 nulls to represent empty squares. 
 	    // The 9 elements will "map" to each square.
@@ -63,6 +66,13 @@ const rplyBtn = document.getElementById('replay')
 	    // The winner will hold a 'T' if there's a tie.
 	  // 3.2.4) Render those state variables to the page by calling a render function.
 
+function init(){
+  board = [null, null, null, null, null, null, null, null, null]
+  turn = 1
+  winner = null  
+  render()
+}
+
 	// 3.3) The render function should:
 	  // 3.3.1) Loop over the board array (which represents the squares on the page), and for each iteration:
 		  // 3.3.1.1) Use the index of the iteration to access the square in the squares array that corresponds with the current cell being iterated over in the board array
@@ -76,6 +86,26 @@ const rplyBtn = document.getElementById('replay')
 
 		// 3.4) After completing this step, you should be able to manually change the values held in the board array in the initialization function and see the style of the corresponding square change on your page.
 
+function render(){
+  board.forEach((element, idx) => {
+    let elementLetter
+    if(element === 1){
+      elementLetter = 'X'
+    }else if(element === -1){
+      elementLetter = 'O'
+    }else if(element === null){
+      elementLetter = ''
+    }
+    sqs[idx].innerText = elementLetter
+  })
+  if(!winner){
+    stsMsg.innerText = `It is ${turn === 1 ? 'X' : 'O'}'s turn!`
+  }else if(winner === 'T'){
+    stsMsg.innerText = `GAME OVER! EVERYONE LOSES!`
+  }else{
+    stsMsg.innerText = `Congrats ${winner === 1 ? 'X' : 'O'}`
+  }
+}
 
 // 4) Define the required constants:
 
