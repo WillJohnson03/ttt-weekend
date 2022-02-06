@@ -35,11 +35,13 @@ const stsMsg = document.querySelector('#message')
 // const brd = document.querySelector('.board')
 const sqs = document.querySelectorAll('.game-square')
 // console.log(sqs[1])
-const rplyBtn = document.getElementById('replay')
-// console.log(rplyBtn)
 
 /*----------------------------- Event Listeners -----------------------------*/
 // tie event listener to .board...
+
+sqs.forEach((square) => {
+  square.addEventListener('click', handleClick)
+})
 
 
 /*-------------------------------- Functions --------------------------------*/
@@ -131,6 +133,26 @@ function render(){
 	// 5.5) Change the turn by multiplying turn by -1 (this flips a 1 to -1, and vice-versa).
 
 	// 5.6) Set the winner variable if there's a winner by calling a new function: getWinner.
+
+function handleClick(evt) {
+	console.log(evt)
+	let sqIdx = parseInt(evt.target.id.replace("sq", ""));
+	console.log(sqIdx)
+
+	if (board[sqIdx] || winner) {
+		return;
+	}
+	console.log(winner)
+	console.log(board[sqIdx])
+
+	board[sqIdx] = turn;
+	turn *= -1;
+	console.log(board[sqIdx])
+	winner = getWinner();
+
+	render();
+}
+
 	  // The getWinner function will...
 
 	  // 5.6.1) There are a couple methods you can use to find out if there is a winner.
@@ -156,6 +178,21 @@ function render(){
 
 // 5.7) All state has been updated, so render the state to the page (step 3.3).
 
+function getWinner() {
+  if (Math.abs(board[0] + board[1] + board[2]) === 3) return board[0]
+  if (Math.abs(board[3] + board[4] + board[5]) === 3) return board[3]
+  if (Math.abs(board[6] + board[7] + board[8]) === 3) return board[6]
+  if (Math.abs(board[0] + board[3] + board[6]) === 3) return board[0]
+  if (Math.abs(board[1] + board[4] + board[7]) === 3) return board[1]
+  if (Math.abs(board[2] + board[5] + board[8]) === 3) return board[2]
+  if (Math.abs(board[0] + board[4] + board[8]) === 3) return board[0]
+  if (Math.abs(board[2] + board[4] + board[6]) === 3) return board[2]
+  if (board.includes(null)) {
+    return null;
+  } else {
+    return 'T';
+  }
+}
 
 // 6) Handle a player clicking the replay button:
 
@@ -163,4 +200,8 @@ function render(){
 
 	// 6.2) Store the new replay button element
 
+const rplyBtn = document.getElementById('replay')
+
 	// 6.3) Do steps 4.1 (initialize the state variables) and 4.2 (render).
+
+rplyBtn.addEventListener('click', init)
